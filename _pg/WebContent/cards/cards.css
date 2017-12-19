@@ -1,18 +1,46 @@
 @charset "UTF-8";
-*{margin:0; user-select: none; font-family: "맑은 고딕";}
+@font-face {
+	font-family: logo;
+	src: url("font/impact.ttf");
+}
+
+*{margin:0; user-select: none; font-family:"맑은 고딕";}
 		
-#background {
-	z-index: 0;
-	position: fixed;
-	left: 0; right: 0; top: 0; bottom: 0;
-	
-	display: block;
+body {
 	background: url("img/bf4bg2.jpg") no-repeat;
 	background-size: 100%;
-	
-	filter: blur(0.1vh);
+	color:white;
+}
+
+#header {
+	height: 50px;
+	background: rgba(0,0,0,0.1);
+	color: rgba(255,255,255,0.9);
+}
+
+.at-logo {
+	position: absolute;
+	left: 50%; 
+	margin-left: -50px;
+	width: 150px; height: inherit;
+	opacity: 0.8;
+}
+.at-logo-icon {
+	display: inline-block;
+	width:30px; height: 30px;
+	background: url("img/Trollo.png") no-repeat top left;
+	background-size: 100%;
+}
+.at-logo-text {
+	font-family: logo;
+	font-size: 35px;
+}
+
+.at-activity-name{
+	float: left;
+	font-size: 30px;
 }
 
 #content {
-	z-index: 1;
+	
 }
