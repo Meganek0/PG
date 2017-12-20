@@ -4,43 +4,88 @@
 	src: url("font/impact.ttf");
 }
 
-*{margin:0; user-select: none; font-family:"맑은 고딕";}
+*{}
 		
-body {
+body {A
 	background: url("img/bf4bg2.jpg") no-repeat;
 	background-size: 100%;
 	color:white;
+	margin:0;
+	user-select: none;
+	font-family:"맑은 고딕";
 }
 
 #header {
-	height: 50px;
+	height: 30px;
 	background: rgba(0,0,0,0.1);
 	color: rgba(255,255,255,0.9);
+	padding: 5px 10px;
+	line-height: 30px;
 }
 
 .at-logo {
 	position: absolute;
 	left: 50%; 
 	margin-left: -50px;
-	width: 150px; height: inherit;
+	width: 120px; height: inherit;
 	opacity: 0.8;
 }
 .at-logo-icon {
 	display: inline-block;
-	width:30px; height: 30px;
+	width:25px; height: 25px;
 	background: url("img/Trollo.png") no-repeat top left;
 	background-size: 100%;
 }
 .at-logo-text {
 	font-family: logo;
-	font-size: 35px;
+	font-size: 30px;
 }
 
 .at-activity-name{
 	float: left;
-	font-size: 30px;
+	font-size: 25px;
+}
+.at-header-menu{
+	float: right;
+	width: 30px; height: 30px;
+	
+	background: rgba(255,255,255,0.7);
+	border-radius: 3px;
+	
+	color: black;
+	text-align: center;
+	text-decoration: none;
 }
 
 #content {
 	
+}
+
+.at-card-list{
+	position: absolute;
+	bottom: 0px;
+}
+.at-card-menu{
+	float:left;
+	position: relative;
+	width: 5vw; height:5vw;
+	margin: 1vw;
+	
+	border: 0.1vw solid rgba(255,255,255,0.3);
+	background: rgba(255,255,255,0.5);
+	border-radius: 1vw;
+}
+
+.at-addblock-icon{
+	display: block;
+	width: inherit; height: inherit;
+	background: url("img/plus.png");
+	background-size: 100%;
+}
+
+.at-delblock-icon{
+	display: block;
+	width: inherit; height: inherit;
+	background: url("img/trashbin.png");
+	background-size: 100%;
 }

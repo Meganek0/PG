@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="jquery-3.2.1.js"></script>
+	<style>
+		img {
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			
+			top: 50px;
+			left: 50px;
+		}
+		.stop {opacity: 1; z-index:1;}
+		.move {opacity: 0.5; z-index:9999;}
+	</style>
+</head>
+<body>
+	<img src="Battlefest 2017.09.png" class="stop">
+	<img src="Battlefest 2017.04.png" class="stop">
+	<div style="width:400px; height:400px; position:absolute;" class="stop">아하</div>
+	<script>
+		var img = document.querySelectorAll("img");
+		var ofx = 0;
+		var ofy = 0;
+		
+		
+		document.querySelector("div").addEventListener(
+				"mousedown",
+				(e) => {
+					var cls = e.target.getAttribute("class");
+					cls = "move";
+					e.target.setAttribute("class", cls);
+					ofx = e.offsetX;
+					ofy = e.offsetY;
+					
+					e.preventDefault();
+				}
+			);
+		
+		
+		for (var i = 0; i < img.length; i++) {	
+			img[i].addEventListener(
+				"mousedown",
+				(e) => {
+					var cls = e.target.getAttribute("class");
+					cls = "move";
+					e.target.setAttribute("class", cls);
+					ofx = e.offsetX;
+					ofy = e.offsetY;
+					
+					e.preventDefault();
+				}
+			);
+			
+			/* img[i].addEventListener(
+				"mouseup",
+				(e) => {
+					var cls = e.target.getAttribute("class");
+					cls = "stop";
+					e.target.setAttribute("class", cls);
+				}
+			); */
+			
+		}
+		
+		document.addEventListener(
+			"mousemove",
+			(e) => {
+				var move = document.querySelector(".move");
+				
+				if(move != null){
+					move.style.left = (e.clientX - ofx) + "px";
+					move.style.top = (e.clientY - ofy) + "px";
+				}
+			}
+		);
+		
+		$(function(){
+		    $(window).mouseup(function(){
+		       $(".move").attr("class","stop");
+		    });
+		});
+// 		// 좌표와 연관된 정보
+// 		// 이벤트 발생 객체의 좌표
+// 		console.log(obj.offsetLeft, obj.offsetTop);
+					
+// 		// 이벤트 발생 객체와 클릭된 위치의 차이
+// 		console.log(e.offsetX, e.offsetY);
+					
+// 		// 브라우저 위치 기준
+// 		console.log(e.clientX, e.clientY);
+					
+// 		// 화면 기준 
+// 		console.log(e.screenX, e.screenY);
+	</script>
+</body>
+</html>
