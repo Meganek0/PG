@@ -4,19 +4,29 @@
 	src: url("font/impact.ttf");
 }
 
-*{}
-		
-body {A
-	background: url("img/bf4bg2.jpg") no-repeat;
-	background-size: 100%;
+html, body, #troll {
+    height:100%;
+    margin:0;
+}
+
+html {
+	background: url("img/bf4bg2.jpg");
+	background-size: cover;
 	color:white;
-	margin:0;
 	user-select: none;
 	font-family:"맑은 고딕";
 }
 
+#troll {
+	display: flex;
+	flex-direction: column;
+	margin:0;
+}
+
 #header {
+	flex: 0 1 auto;
 	height: 30px;
+	padding: 5px 10px;
 	background: rgba(0,0,0,0.1);
 	color: rgba(255,255,255,0.9);
 	padding: 5px 10px;
@@ -33,7 +43,7 @@ body {A
 .at-logo-icon {
 	display: inline-block;
 	width:25px; height: 25px;
-	background: url("img/Trollo.png") no-repeat top left;
+	background: url("img/Trollo.png") no-repeat ;
 	background-size: 100%;
 }
 .at-logo-text {
@@ -45,7 +55,7 @@ body {A
 	float: left;
 	font-size: 25px;
 }
-.at-header-menu{
+.at-header-menubtn{
 	float: right;
 	width: 30px; height: 30px;
 	
@@ -57,15 +67,25 @@ body {A
 	text-decoration: none;
 }
 
-#content {
-	
+.at-menu-icon{
+	display: inline-block;
+	width:100%; height: 100%;
+	background: url("img/gear.png") no-repeat ;
+	background-size: 100%;
+	background-position: center;
 }
 
-.at-card-list{
+#content {
+	padding: 3px;
+	flex: 1 1 auto;
+}
+
+.at-board-menulist{
 	position: absolute;
 	bottom: 0px;
 }
-.at-card-menu{
+
+.at-board-menu{
 	float:left;
 	position: relative;
 	width: 5vw; height:5vw;
