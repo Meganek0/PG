@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div id="troll">
+		<noscript><p>스크립트 켜라</p></noscript>
 		<div id="header">
 			<a class="at-activity-name">활동명</a>
 			<a class="at-activity-aha">공개상태</a>
@@ -27,7 +28,7 @@
 		</div>
 		<div id="content">
 			<div id="at-board">
-				<div id="cardtest">테스트박스</div>
+				<div class="at-list">테스트박스</div>
 			</div>
 			<div class="at-board-menulist">
 				<div class="at-board-menu at-addblock"><span class="at-addblock-icon"></span></div>
@@ -37,6 +38,79 @@
 	</div>
 </body>
 <script>
-
+	//리스트 draggable 이벤트
+	$(document).ready(function() {
+	    var $dragging = null;
+	    $('body').on("mousedown", ".at-list", function(e) {
+	    	
+	        $(this).addClass('at-gottagofast');	//css걸때 필요함
+	        ofy = e.offsetY
+	        ofx = e.offsetX
+	       	
+	        $('#content').on("mousemove", function(e) {
+	            if ($dragging) {
+	                $dragging.offset({
+	                    top: e.pageY - ofy,
+	                    left: e.pageX - ofx
+	                });
+	            }
+	        });
+	        
+	        $dragging = $(e.target);
+	    })
+	    
+	    $(window).on("mouseup",function(e){
+	    	if($dragging){
+		    	if($dragging.position().left < 0){
+		    		$dragging.animate({left:0},100,"linear",function(){})
+		    	}
+		    	if($dragging.position().top < 0){
+		    		$dragging.animate({top:0},100,"linear",function(){})
+		    	}
+	    	}
+	        $dragging = null;
+	        $('.at-gottagofast').removeClass('at-gottagofast');
+	    });
+	});
+	
+	//추가 블록
+	$(".at-addblock").on("click",function(e){
+		$newlist = $("<div>").text("테스트박스").addClass("at-list").css({
+			left: e.pageX,
+			top: e.pageY-30
+		});
+		
+		$("#at-board").append($newlist);
+		
+		$newlist.animate({
+			left: Math.floor(Math.random() * ($("#content").width()-$newlist.width())),
+			top: Math.floor(Math.random() * ($("#content").height()-$newlist.height()))
+		},200);
+	})
+	
+	//삭제 블록
+	$(".at-delblock").on("dragover",function(e){
+		e.preventDefault();
+		event.stopPropagation();
+		console.log("aha1");
+	})
+	$(".at-delblock").on("dragleave",function(e){
+		e.preventDefault();
+		event.stopPropagation();
+		console.log("aha2");
+	})
+	$(".at-delblock").on("drop",function(e){
+		e.preventDefault();
+		event.stopPropagation();
+		console.log("aha3");
+	})
+	
+	//헤더 매뉴
+	$(".at-header-menubtn").on("click", function(){
+		$("html").css({
+			"background":"url('img/bf4bg2.jpg')",
+			"background-size":"cover"	
+		});
+	})
 </script>
 </html>
