@@ -9,8 +9,8 @@
 </head>
 
 <body>
-	<div id="troll">
 	<noscript><p>스크립트 켜라</p></noscript>
+	<div id="troll">
 		<div id="header">
 			<a class="at-activity-name">활동명</a>
 			<a class="at-activity-perm">공개상태</a>
@@ -21,16 +21,20 @@
 			<a class="at-header-menubtn" href="#">
 				<span class="at-menu-icon"></span>
 			</a>
-			<div id="at-header-menu" style="display:none;">
-				ㅇ<br>
-				ㅇ<br>
-				ㅇ<br>
-				ㅇ<br>
+			<div class="at-header-menu hide">
+				<div class="at-header-menu-title"></div>
+				<a class="temp-close" href="#">닫아</a><br>
+				<a class="temp-color" href="#">배경</a><br>
+				<p>공개상태 변경</p>
+				<p>추가, 삭제시 팝업</p>
+				<p></p>
 			</div>
 		</div>
 		<div id="content">
 			<div id="at-board">
-				<div class="at-list">테스트박스</div>
+				<div class="at-list">
+					<div class="at-list-header">테스트박스</div>
+				</div>
 			</div>
 			<div class="at-board-menulist">
 				<div class="at-board-menu at-addblock"><span class="at-addblock-icon"></span></div>
@@ -63,6 +67,7 @@
 	
 	//추가 블록
 	$(".at-addblock").on("click",function(e){
+		console.dir($("#content"))
 		$newlist = $("<div>").text("테스트박스").addClass("at-list").css({
 			left: e.pageX,
 			top: e.pageY-30,
@@ -88,8 +93,8 @@
 		$("#at-board").append($newlist);
 		
 		$newlist.animate({
-			left: Math.floor(Math.random() * ($("#content").width()-$newlist.width())),
-			top: Math.floor(Math.random() * ($("#content").height()-$newlist.height()))
+			left: Math.floor(Math.random() * ($("#content").prop("scrollWidth")-$newlist.width())),
+			top: Math.floor(Math.random() * ($("#content").prop("scrollHeight")-$newlist.height()))
 		},400,"easeOutExpo");
 	})
 	
@@ -102,12 +107,20 @@
 		}
 	})
 	
-	//헤더 메뉴
+	//헤더 메뉴 임시
 	$(".at-header-menubtn").on("click", function(){
+		$(".at-header-menu").removeClass("hide")
+	})
+	$(".temp-close").on("click", function(){
+		$(".at-header-menu").addClass("hide")
+	})
+	$(".temp-color").on("click", function(){
 		$("html").css({
 			"background":"url('img/bf4bg2.jpg')",
 			"background-size":"cover"
 		});
 	})
+	
+	
 </script>
 </html>
