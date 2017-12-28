@@ -6,6 +6,7 @@
 <link href="cards.css" rel="stylesheet" type="text/css"/>
 <script src="jquery-3.2.1.js"></script>
 <script src="jquery-ui-1.12.1.js"></script>
+<script src="jquery-ui-touch-punch.js"></script>
 </head>
 
 <body>
@@ -18,22 +19,26 @@
 				<span class="at-logo-icon"></span>
 				<span class="at-logo-text">TROLLO</span>
 			</a>
-			<a class="at-header-menubtn" href="#">
+			<a class="at-menubtn" href="#">
 				<span class="at-menu-icon"></span>
 			</a>
-			<div class="at-header-menu hide">
-				<div class="at-header-menu-title"></div>
-				<a class="temp-close" href="#">닫아</a><br>
-				<a class="temp-color" href="#">배경</a><br>
-				<p>공개상태 변경</p>
-				<p>추가, 삭제시 팝업</p>
-				<p></p>
+			<div class="at-menu hide">
+				<div class="at-menu-header">
+					<div class="at-menu-header-title">메뉴</div>
+					<div class="at-menu-header-close">X</div>
+				</div>
+				<div class="at-menu-content">
+					<div class="at-menu-item">
+					<a class="temp-color" href="#">배경</a></div>
+					<div class="at-menu-item">공개상태 변경</div>
+					<div class="at-menu-item">추가,삭제시 팝업</div>
+				</div>
 			</div>
 		</div>
 		<div id="content">
 			<div id="at-board">
-				<div class="at-list">
-					<div class="at-list-header">테스트박스</div>
+				<div class="at-board-list">
+					<div class="at-board-list-header">테스트박스</div>
 				</div>
 			</div>
 			<div class="at-board-menulist">
@@ -46,8 +51,9 @@
 <script>
 	//READY!
 	$(document).ready(function() {
-		$(".at-list").draggable({
+		$(".at-board-list").draggable({
 			addClasses: false,
+			scroll: false,
 			classes:{
 				"ui-draggable-handle": "at-sanic",
 				"ui-draggable-dragging": "at-gottagofast"
@@ -67,13 +73,13 @@
 	
 	//추가 블록
 	$(".at-addblock").on("click",function(e){
-		console.dir($("#content"))
-		$newlist = $("<div>").text("테스트박스").addClass("at-list").css({
+		$newlist = $("<div>").text("테스트박스").addClass("at-board-list").css({
 			left: e.pageX,
 			top: e.pageY-30,
 			position: "absolute"
 		}).draggable({
 			addClasses: false,
+			scroll: false,
 			classes:{
 				"ui-draggable-handle": "at-sanic",
 				"ui-draggable-dragging": "at-gottagofast"
@@ -101,18 +107,20 @@
 	//삭제 블록
 	$(".at-delblock").droppable({
 		addClasses: false,
-		accept: ".at-list",
+		accept: ".at-board-list",
 		drop: function(e,u){
 			u.draggable.remove();
 		}
 	})
 	
 	//헤더 메뉴 임시
-	$(".at-header-menubtn").on("click", function(){
-		$(".at-header-menu").removeClass("hide")
+	$(".at-menubtn").on("click", function(){
+		$(".at-menu").removeClass("hide",200,"linear")
+		$(".at-menubtn").addClass("hide")
 	})
-	$(".temp-close").on("click", function(){
-		$(".at-header-menu").addClass("hide")
+	$(".at-menu-header-close").on("click", function(){
+		$(".at-menu").addClass("hide",200,"linear")
+		$(".at-menubtn").removeClass("hide",200)
 	})
 	$(".temp-color").on("click", function(){
 		$("html").css({
