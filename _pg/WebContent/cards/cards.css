@@ -101,7 +101,8 @@ noscript {
 	position: absolute;
 	top:5px; right:10px;
 	width:30px; height:30px;
-	background:tomato;
+	background: url("img/close.png") no-repeat;
+	background-size: 100%;
 }
 
 .at-menu-content{
@@ -126,6 +127,9 @@ noscript {
 	background-size: 100%;
 	background-position: center;
 }
+
+.at-background-image{}
+.at-background-color{}
 
 #content {
 	position: relative;

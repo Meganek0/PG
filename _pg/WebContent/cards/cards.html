@@ -26,13 +26,23 @@
 				<div class="at-menu hide">
 					<div class="at-menu-header">
 						<div class="at-menu-header-title">메뉴</div>
-						<div class="at-menu-header-close">X</div>
+						<div class="at-menu-header-close"></div>
 					</div>
 					<div class="at-menu-content">
-						<div class="at-menu-item">
-						<a class="temp-color" href="#">배경</a></div>
-						<div class="at-menu-item">공개상태 변경</div>
-						<div class="at-menu-item">추가,삭제시 팝업</div>
+						<div class="at-menu-item at-menu-name">활동명 변경
+						<div style="width=200;height"></div></div>
+						<div class="at-menu-item at-menu-perm">공개상태 변경</div>
+						<div class="at-menu-item at-menu-background">
+							<div class="at-background-image">
+								<span class="at-background-image-uploadbtn">사진</span>
+								<input type="file" class="at-background-image-input" style="display:none;"/>
+							</div>
+							<div class="at-background-color">
+								<input type="color" class="at-background-color-input">
+							</div>
+						</div>
+						<div class="at-menu-item at-menu-board">추가,삭제시 팝업
+						<input type="checkbox" class="at-delblock-dialog">삭제</div>
 					</div>
 				</div>
 			</div>
@@ -111,6 +121,9 @@
 		addClasses: false,
 		accept: ".at-board-list",
 		drop: function(e,u){
+			if($(".at-delblock-dialog")[0].checked){
+				return;
+			}
 			u.draggable.remove();
 		}
 	})
@@ -124,9 +137,23 @@
 		$(".at-menu").addClass("hide",200,"linear")
 		$(".at-menubtn").removeClass("hide",200)
 	})
-	$(".temp-color").on("click", function(){
+	$(".at-background-image-uploadbtn").on("click", function(){
+		$(".at-background-image-input").trigger("click");
+	})
+	$(".at-background-image-input").on("change", function(){
+		console.log(this.files[0])
+		if(this.files[0].type.startsWith("image")){
+		//업로드 후 실행
+			$("html").css({
+				"background":"url('img/bf4bg2.jpg')",
+				"background-size":"cover"
+			});
+		}
+		
+	})
+	$(".at-background-color-input").on("change",function(){
 		$("html").css({
-			"background":"url('img/bf4bg2.jpg')",
+			"background":$(this).val(),
 			"background-size":"cover"
 		});
 	})
