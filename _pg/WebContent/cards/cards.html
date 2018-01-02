@@ -14,8 +14,8 @@
 	<div id="troll">
 		<div id="header">
 			<div class="at-header-wrapper">
-				<a class="at-activity-name">활동명</a>
-				<a class="at-activity-perm">공개상태</a>
+				<a class="at-activity-name">심영</a>
+				<a class="at-activity-perm">전체공개</a>
 				<a class="at-logo">
 					<span class="at-logo-icon"></span>
 					<span class="at-logo-text">TROLLO</span>
@@ -29,20 +29,27 @@
 						<div class="at-menu-header-close"></div>
 					</div>
 					<div class="at-menu-content">
-						<div class="at-menu-item at-menu-name">활동명 변경
-						<div style="width=200;height"></div></div>
-						<div class="at-menu-item at-menu-perm">공개상태 변경</div>
+						<div class="at-menu-item at-menu-name">
+							<span class=at-activity-name-button>활동명 변경</span>
+							<input class="at-activity-name-input"/>
+						</div>
+						<div class="at-menu-item at-menu-perm">공개상태 변경<br>
+							<div class="at-activity-perm-button">전체공개</div>
+							<div class="at-activity-perm-button">지원기업공개</div>
+							<div class="at-activity-perm-button">비공개</div>
+						</div>
 						<div class="at-menu-item at-menu-background">
 							<div class="at-background-image">
-								<span class="at-background-image-uploadbtn">사진</span>
+								<span class="at-background-image-button">사진</span>
 								<input type="file" class="at-background-image-input" style="display:none;"/>
 							</div>
 							<div class="at-background-color">
-								<input type="color" class="at-background-color-input">
+								<span class="at-background-color-button">단색</span>
+								<input type="color" class="at-background-color-input" style="display:none;">
 							</div>
 						</div>
 						<div class="at-menu-item at-menu-board">추가,삭제시 팝업
-						<input type="checkbox" class="at-delblock-dialog">삭제</div>
+						<input type="checkbox" class="at-delblock-dialog">활성</div>
 					</div>
 				</div>
 			</div>
@@ -50,7 +57,10 @@
 		<div id="content">
 			<div id="at-board">
 				<div class="at-board-list">
-					<div class="at-board-list-header">테스트박스</div>
+					<div class="at-board-list-header">
+						<span class="at-board-list-name">테스트박스</span>
+						<div class=""></div>
+					</div>
 				</div>
 			</div>
 			<div class="at-board-menulist">
@@ -120,6 +130,8 @@
 	$(".at-delblock").droppable({
 		addClasses: false,
 		accept: ".at-board-list",
+		over: function(e,u){u.draggable.addClass("faster")},
+		out: function(e,u){u.draggable.removeClass("faster")},
 		drop: function(e,u){
 			if($(".at-delblock-dialog")[0].checked){
 				return;
@@ -137,26 +149,44 @@
 		$(".at-menu").addClass("hide",200,"linear")
 		$(".at-menubtn").removeClass("hide",200)
 	})
-	$(".at-background-image-uploadbtn").on("click", function(){
+	$(".at-background-image-button").on("click", function(){
 		$(".at-background-image-input").trigger("click");
 	})
 	$(".at-background-image-input").on("change", function(){
-		console.log(this.files[0])
-		if(this.files[0].type.startsWith("image")){
-		//업로드 후 실행
-			$("html").css({
-				"background":"url('img/bf4bg2.jpg')",
-				"background-size":"cover"
-			});
+		let file = this.files[0]
+		if(file){
+			if(file.type.startsWith("image")){
+				
+				var reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = function () {
+					$("html").css({
+						"background":"url("+reader.result+")",
+						"background-size":"cover"
+					});
+				};
+				reader.onerror = function (error) {console.log("오류:", error);};
+			}
 		}
 		
 	})
+	$(".at-background-color-button").on("click", function(){
+		$(".at-background-color-input").trigger("click");
+	})
 	$(".at-background-color-input").on("change",function(){
+		
 		$("html").css({
 			"background":$(this).val(),
 			"background-size":"cover"
 		});
 	})
+	$(".at-activity-name-button").on("click", function(){
+		$(".at-activity-name").text($(".at-activity-name-input").val());
+	})
+	$(".at-activity-perm-button").on("click", function(){
+		$(".at-activity-perm").text($(this).text());
+	})
+	
 	
 	
 </script>
