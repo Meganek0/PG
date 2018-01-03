@@ -48,8 +48,8 @@
 								<input type="color" class="at-background-color-input" style="display:none;">
 							</div>
 						</div>
-						<div class="at-menu-item at-menu-board">추가,삭제시 팝업
-						<input type="checkbox" class="at-delblock-dialog">활성</div>
+						<div class="at-menu-item at-menu-board">삭제시 팝업
+						<input type="checkbox" class="at-delblock-dialog" checked>활성</div>
 					</div>
 				</div>
 			</div>
@@ -67,6 +67,13 @@
 				<div class="at-board-menu at-addblock"><span class="at-addblock-icon"></span></div>
 				<div class="at-board-menu at-delblock"><span class="at-delblock-icon"></span></div>
 			</div>
+		</div>
+	</div>
+	<div id="modal" class="hide">
+		<div class="md-blind"></div>
+		<div class="md-dialog">
+			<div class="md-dialog-message"></div>
+			<div class="md-dialog-items"></div>
 		</div>
 	</div>
 </body>
@@ -134,6 +141,9 @@
 		out: function(e,u){u.draggable.removeClass("faster")},
 		drop: function(e,u){
 			if($(".at-delblock-dialog")[0].checked){
+				modal("목을 칠까요?",function(){
+					u.draggable.remove();
+				});
 				return;
 			}
 			u.draggable.remove();
@@ -179,15 +189,31 @@
 			"background":$(this).val(),
 			"background-size":"cover"
 		});
-	})
+	});
 	$(".at-activity-name-button").on("click", function(){
 		$(".at-activity-name").text($(".at-activity-name-input").val());
-	})
+	});
 	$(".at-activity-perm-button").on("click", function(){
 		$(".at-activity-perm").text($(this).text());
-	})
+	});
 	
-	
+	//모달
+	var modalFunc = function(){return;};
+	modal = function(msg,func = function(){return;}){
+		//메세지
+		$(".md-dialog-message").text(msg);
+		//아이템
+		$(".md-dialog-items").html(
+			'<a href="#" class="md-dialog-item md-dialog-yes">그래</a>'+
+			'<a href="#" class="md-dialog-item md-dialog-no">아니</a>'
+		);
+		//YES
+		modalFunc = func;
+		
+		$("#modal").removeClass("hide");
+	}
+	$("#modal").on("click",".md-dialog-item",function(){$("#modal").addClass("hide");});
+	$("#modal").on("click",".md-dialog-yes",function(){modalFunc();});
 	
 </script>
 </html>
