@@ -23,8 +23,8 @@ noscript {
 	position: absolute;
 	top: 0; left: 0;right: 0; bottom: 0;
     background: white;
-    color: black; font-weight: bolder;
-    text-align: center; line-height: 100vh;
+    color: black; font-weight: bolder; font-size: 10vh;
+    text-align: center; line-height: 60vh;
     z-index: 9999;
 }
 
@@ -44,7 +44,7 @@ noscript {
 	color: rgba(255,255,255,0.9);
 	line-height: 30px;
 	
-	z-index:5;
+	z-index:3;
 }
 
 .at-logo {
@@ -95,13 +95,13 @@ noscript {
 	font-weight: bolder;
 	text-align: center;
 }
-.at-menu-header-close{
+.at-menu-header-button{
 	position: absolute;
-	top:5px; right:10px;
+	top:5px; 
 	width:30px; height:30px;
-	background: url("img/close.png") no-repeat;
-	background-size: 100%;
-}
+}.at-menu-header-button.hide{opacity:0;}
+.at-close-icon{background: url("img/close.png") no-repeat; background-size: 100%; right:10px;}
+.at-back-icon{background: url("img/arrow.png") no-repeat; background-size: 100%; left:10px;}
 
 .at-menu-content{
 	background: rgba(224,224,224,0.9);
@@ -137,21 +137,42 @@ noscript {
 	overflow:overlay;
 	z-index: 0;
 }
+#content::-webkit-scrollbar {width: 12px; height:12px;}
+#content::-webkit-scrollbar-track {
+	background: rgba(0,0,0,0.2);
+	border:1px solid white; border-right:none; border-bottom: none;
+}
+#content::-webkit-scrollbar-thumb {background: white;}
+#content::-webkit-scrollbar-corner {background: white;}
 
 #at-board{
-	position: absolute;
+	position:absolute;
 	top: 0; left: 0;
-    right: 0; bottom: 0;
+	right: 0; bottom: 0;
     padding: 3px;
 }
-
 .at-board-list{
 	position:absolute;
-	background:rgba(192,192,192,0.9);
 	width:250px;
 	
+	border:1px solid white;
 	border-radius:3px;
 	z-index: 2;
+}
+.at-board-list-header{
+	padding:3px;
+	border-bottom:2px solid white;
+	background:rgba(32,32,32,0.9);
+}
+.at-board-list-content{
+	padding:2px;
+	background:rgba(32,32,32,0.5);
+}
+.at-list-icon{
+	position:absolute; top:3px; right:3px;
+	width:20px; height:20px;
+	background: url("img/list.png") no-repeat;
+	background-size: 100%;
 }
 
 .at-gottagofast{
@@ -200,23 +221,25 @@ noscript {
 	position: relative;
 	
 	width: 5vw; height:5vw;
-	margin: 1vw;
+	margin: 1vw 0.5vw;
 	
-	border: 0.1vw solid rgba(255,255,255,0.3);
-	background: rgba(255,255,255,0.5);
+	border: 0.1vw solid black;
+	background: rgba(255,255,255,0.7);
 	border-radius: 1vw;
 }
 .at-addblock-icon{
 	display: block;
 	width: inherit; height: inherit;
-	background: url("img/plus.png");
-	background-size: 100%;
+	background: url("img/plus.png") no-repeat;
+	background-size: 90%;
+	background-position: center;
 }
 .at-delblock-icon{
 	display: block;
 	width: inherit; height: inherit;
-	background: url("img/trashbin.png");
-	background-size: 100%;
+	background: url("img/trashbin.png") no-repeat;
+	background-size: 90%;
+	background-position: center;
 }
 
 #modal{
@@ -245,23 +268,29 @@ noscript {
 }
 .md-dialog-message{
 	font-size: 25px;
-	flex:4 0 auto; 
+	flex:1 0 auto; 
 	font-weight: 900;
 }
-.md-dialog-items{flex:1 0 auto;}
+.md-dialog-items{flex:0 1 auto; height:50px; display:flex;}
 .md-dialog-item{
-	margin: 5px;
+	flex:1;
+	display:inline-block;
+	margin: 3px;
+	border: 1px solid white;
 	border-radius: 5px;
 	
+	line-height:40px;
 	color: white;
+	font-weight: 600;
 	text-decoration:none;
 	text-align: center;
-	background: rgba(0,0,0,0.9);
+	background: rgba(0,0,0,0.7);
 }.md-dialog-item:hover{
-	color: black;
-	background: rgba(255,255,255,0.9);
+	filter: invert(100%);
+}.md-dialog-yes{
+	color: orange;
+	border: 1px solid orange;
 }
-
 .md-blind {
 	position: absolute;
 	z-index:9998;

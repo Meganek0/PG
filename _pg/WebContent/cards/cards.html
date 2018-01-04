@@ -25,8 +25,9 @@
 				</a>
 				<div class="at-menu hide">
 					<div class="at-menu-header">
+						<div class="at-menu-header-button at-back-icon hide"></div>
 						<div class="at-menu-header-title">메뉴</div>
-						<div class="at-menu-header-close"></div>
+						<div class="at-menu-header-button at-close-icon"></div>
 					</div>
 					<div class="at-menu-content">
 						<div class="at-menu-item at-menu-name">
@@ -48,6 +49,7 @@
 								<input type="color" class="at-background-color-input" style="display:none;">
 							</div>
 						</div>
+						<div class="at-menu-item mtt">아</div>
 						<div class="at-menu-item at-menu-board">삭제시 팝업
 						<input type="checkbox" class="at-delblock-dialog" checked>활성</div>
 					</div>
@@ -58,9 +60,10 @@
 			<div id="at-board">
 				<div class="at-board-list">
 					<div class="at-board-list-header">
-						<span class="at-board-list-name">테스트박스</span>
-						<div class=""></div>
+						<span class="at-list-name">테스트박스</span>
+						<div class="at-list-menu at-list-icon"></div>
 					</div>
+					<div class="at-board-list-content">여백</div>
 				</div>
 			</div>
 			<div class="at-board-menulist">
@@ -81,6 +84,7 @@
 	//READY!
 	$(document).ready(function() {
 		$(".at-board-list").draggable({
+			handle: ".at-board-list-header",
 			addClasses: false,
 			scroll: false,
 			classes:{
@@ -90,23 +94,36 @@
 			create:function(e,u){$(this).removeClass("ui-draggable-handle")},
 			start:function(e,u){$(this).removeClass("ui-draggable-dragging")},
 			stop: function(e,u){
-				if($(this).position().left < 0){
+				if($(this).position().top < 0 && $(this).position().left < 0){
+					$(this).animate({top:0,left:0},200,"easeOutExpo",function(){})
+				}
+				else if($(this).position().left < 0){
 					$(this).animate({left:0},200,"easeOutExpo",function(){})
-				}    
-				if($(this).position().top < 0){
+				}   
+				else if($(this).position().top < 0){
 					$(this).animate({top:0},200,"easeOutExpo",function(){})
 				}
 			} 
 		});
 	});
-	
+	///리스트
 	//추가 블록
 	$(".at-addblock").on("click",function(e){
-		$newlist = $("<div>").text("테스트박스").addClass("at-board-list").css({
+		$newlist = $("<div>")
+		.html(
+		'<div class="at-board-list-header">'
+			+'<span class="at-list-name">테스트박스</span>'
+			+'<div class="at-list-menu at-list-icon"></div>'
+		+'</div>'
+		+'<div class="at-board-list-content">여백</div>'
+		)
+		.addClass("at-board-list")
+		.css({
 			left: e.pageX,
 			top: e.pageY-30,
 			position: "absolute"
 		}).draggable({
+			handle: ".at-board-list-header",
 			addClasses: false,
 			scroll: false,
 			classes:{
@@ -116,10 +133,13 @@
 			create:function(e,u){$(this).removeClass("ui-draggable-handle")},
 			start:function(e,u){$(this).removeClass("ui-draggable-dragging")},
 			stop: function(e,u){
-				if($(this).position().left < 0){
+				if($(this).position().top < 0 && $(this).position().left < 0){
+					$(this).animate({top:0,left:0},200,"easeOutExpo",function(){})
+				}
+				else if($(this).position().left < 0){
 					$(this).animate({left:0},200,"easeOutExpo",function(){})
-				}    
-				if($(this).position().top < 0){
+				}   
+				else if($(this).position().top < 0){
 					$(this).animate({top:0},200,"easeOutExpo",function(){})
 				}
 			} 
@@ -150,19 +170,21 @@
 		}
 	})
 	
-	//헤더 메뉴 임시
+	
+	///헤더
+	//메뉴
 	$(".at-menubtn").on("click", function(){
 		$(".at-menu").removeClass("hide",200,"linear")
 		$(".at-menubtn").addClass("hide")
 	})
-	$(".at-menu-header-close").on("click", function(){
+	$(".at-menu-header-button.at-close-icon").on("click", function(){
 		$(".at-menu").addClass("hide",200,"linear")
 		$(".at-menubtn").removeClass("hide",200)
 	})
-	$(".at-background-image-button").on("click", function(){
+	$(".at-menu").on("click",".at-background-image-button", function(){
 		$(".at-background-image-input").trigger("click");
 	})
-	$(".at-background-image-input").on("change", function(){
+	$(".at-menu").on("change",".at-background-image-input", function(){
 		let file = this.files[0]
 		if(file){
 			if(file.type.startsWith("image")){
@@ -178,26 +200,29 @@
 				reader.onerror = function (error) {console.log("오류:", error);};
 			}
 		}
-		
 	})
-	$(".at-background-color-button").on("click", function(){
+	$(".at-menu").on("click",".at-background-color-button", function(){
 		$(".at-background-color-input").trigger("click");
 	})
-	$(".at-background-color-input").on("change",function(){
-		
+	$(".at-menu").on("change",".at-background-color-input",function(){
 		$("html").css({
 			"background":$(this).val(),
 			"background-size":"cover"
 		});
 	});
-	$(".at-activity-name-button").on("click", function(){
+	
+	$(".at-menu").on("click",".at-activity-name-button", function(){
 		$(".at-activity-name").text($(".at-activity-name-input").val());
 	});
-	$(".at-activity-perm-button").on("click", function(){
+	$(".at-menu").on("click",".at-activity-perm-button", function(){
 		$(".at-activity-perm").text($(this).text());
 	});
 	
-	//모달
+	$(".at-menu").on("click",".mtt",function(){
+		$(".at-menu-header-button.at-back-icon").toggleClass("hide",200)
+	});
+	
+	///모달
 	var modalFunc = function(){return;};
 	modal = function(msg,func = function(){return;}){
 		//메세지
