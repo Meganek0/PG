@@ -31,15 +31,18 @@
 					</div>
 					<div class="at-menu-content">
 						<div class="at-menu-item at-menu-name">
-							<span class=at-activity-name-button>활동명 변경</span>
+							<div class="at-menu-item-label">활동명 변경</div>
 							<input class="at-activity-name-input"/>
+							<a class="at-activity-name-button" href="#" style="text-decoration:none; color:white;">버튼</a>
 						</div>
-						<div class="at-menu-item at-menu-perm">공개상태 변경<br>
+						<div class="at-menu-item at-menu-perm">
+							<div class="at-menu-item-label">공개상태 변경</div>
 							<div class="at-activity-perm-button">전체공개</div>
 							<div class="at-activity-perm-button">지원기업공개</div>
 							<div class="at-activity-perm-button">비공개</div>
 						</div>
 						<div class="at-menu-item at-menu-background">
+							<div class="at-menu-item-label">배경화면</div>
 							<div class="at-background-image">
 								<span class="at-background-image-button">사진</span>
 								<input type="file" class="at-background-image-input" style="display:none;"/>
@@ -49,21 +52,23 @@
 								<input type="color" class="at-background-color-input" style="display:none;">
 							</div>
 						</div>
-						<div class="at-menu-item mtt">아</div>
 						<div class="at-menu-item at-menu-board">삭제시 팝업
 						<input type="checkbox" class="at-delblock-dialog" checked>활성</div>
+						<div class="at-menu-item mtt">아</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div id="content">
 			<div id="at-board">
+				<div class="at-list-item" style="z-index:100;">테스트테스트박스</div>
+				<div class="at-list-item" style="z-index:100;">테스트테스트박스2</div>
 				<div class="at-board-list">
 					<div class="at-board-list-header">
 						<span class="at-list-name">테스트박스</span>
 						<div class="at-list-menu at-list-icon"></div>
 					</div>
-					<div class="at-board-list-content">여백</div>
+					<div class="at-board-list-content"><div>공간</div></div>
 				</div>
 			</div>
 			<div class="at-board-menulist">
@@ -82,32 +87,41 @@
 </body>
 <script>
 	//READY!
+	$boardListDraggable = {
+		handle: ".at-board-list-header",
+		addClasses: false,
+		scroll: false,
+		classes:{
+			"ui-draggable-handle": "at-sanic",
+			"ui-draggable-dragging": "at-gottagofast"
+		},
+		create:function(e,u){$(".ui-draggable-handle").removeClass("ui-draggable-handle")},
+		start:function(e,u){$(".ui-draggable-dragging").removeClass("ui-draggable-dragging")},
+		stop: function(e,u){
+			if($(this).position().top < 0 && $(this).position().left < 0){
+				$(this).animate({top:0,left:0},200,"easeOutExpo",function(){})
+			}
+			else if($(this).position().left < 0){
+				$(this).animate({left:0},200,"easeOutExpo",function(){})
+			}   
+			else if($(this).position().top < 0){
+				$(this).animate({top:0},200,"easeOutExpo",function(){})
+			}
+		} 
+	}
+
+	
 	$(document).ready(function() {
-		$(".at-board-list").draggable({
-			handle: ".at-board-list-header",
-			addClasses: false,
-			scroll: false,
-			classes:{
-				"ui-draggable-handle": "at-sanic",
-				"ui-draggable-dragging": "at-gottagofast"
-			},
-			create:function(e,u){$(this).removeClass("ui-draggable-handle")},
-			start:function(e,u){$(this).removeClass("ui-draggable-dragging")},
-			stop: function(e,u){
-				if($(this).position().top < 0 && $(this).position().left < 0){
-					$(this).animate({top:0,left:0},200,"easeOutExpo",function(){})
-				}
-				else if($(this).position().left < 0){
-					$(this).animate({left:0},200,"easeOutExpo",function(){})
-				}   
-				else if($(this).position().top < 0){
-					$(this).animate({top:0},200,"easeOutExpo",function(){})
-				}
-			} 
+		$(document).on('dragover drop', function(e) {
+		    e.preventDefault();
+		    e.stopPropagation();
 		});
+		
+		$(".at-board-list").draggable($boardListDraggable);
 	});
+	
 	///리스트
-	//추가 블록
+	//추가블록
 	$(".at-addblock").on("click",function(e){
 		$newlist = $("<div>")
 		.html(
@@ -115,35 +129,19 @@
 			+'<span class="at-list-name">테스트박스</span>'
 			+'<div class="at-list-menu at-list-icon"></div>'
 		+'</div>'
-		+'<div class="at-board-list-content">여백</div>'
+		).append(
+			$("<div>").addClass("at-board-list-content").html('<div>공간</div>').droppable({
+				addClasses: false,
+				accept:".at-list-item",
+				drop: function(e,u){$(this).append(u.draggable.css({"left":0,"top":0}));}
+			})
 		)
 		.addClass("at-board-list")
 		.css({
 			left: e.pageX,
 			top: e.pageY-30,
 			position: "absolute"
-		}).draggable({
-			handle: ".at-board-list-header",
-			addClasses: false,
-			scroll: false,
-			classes:{
-				"ui-draggable-handle": "at-sanic",
-				"ui-draggable-dragging": "at-gottagofast"
-			},
-			create:function(e,u){$(this).removeClass("ui-draggable-handle")},
-			start:function(e,u){$(this).removeClass("ui-draggable-dragging")},
-			stop: function(e,u){
-				if($(this).position().top < 0 && $(this).position().left < 0){
-					$(this).animate({top:0,left:0},200,"easeOutExpo",function(){})
-				}
-				else if($(this).position().left < 0){
-					$(this).animate({left:0},200,"easeOutExpo",function(){})
-				}   
-				else if($(this).position().top < 0){
-					$(this).animate({top:0},200,"easeOutExpo",function(){})
-				}
-			} 
-		});
+		}).draggable($boardListDraggable);
 		
 		$("#at-board").append($newlist);
 		
@@ -153,10 +151,10 @@
 		},400,"easeOutExpo");
 	})
 	
-	//삭제 블록
+	//삭제블록
 	$(".at-delblock").droppable({
 		addClasses: false,
-		accept: ".at-board-list",
+		accept: ".at-board-list, .at-list-item",
 		over: function(e,u){u.draggable.addClass("faster")},
 		out: function(e,u){u.draggable.removeClass("faster")},
 		drop: function(e,u){
@@ -170,9 +168,30 @@
 		}
 	})
 	
+	//아이템 추가
+	$(".at-list-item").draggable();
+	$("#at-board").on('drop',".at-board-list-content",function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		if(e.originalEvent.dataTransfer){
+			console.dir(e.originalEvent.dataTransfer.files);
+			$(this).append(
+				$("<div>").addClass("at-list-item")
+				.text(e.originalEvent.dataTransfer.files[0].name)
+				.draggable()
+			);
+		}
+	});
+	$(".at-board-list-content").droppable({
+		addClasses: false,
+		accept:".at-list-item",
+		drop: function(e,u){
+			console.log("반응")
+			$(this).append(u.draggable.css({"left":0,"top":0}));
+		}
+	})
 	
-	///헤더
-	//메뉴
+	///메뉴
 	$(".at-menubtn").on("click", function(){
 		$(".at-menu").removeClass("hide",200,"linear")
 		$(".at-menubtn").addClass("hide")
@@ -180,6 +199,10 @@
 	$(".at-menu-header-button.at-close-icon").on("click", function(){
 		$(".at-menu").addClass("hide",200,"linear")
 		$(".at-menubtn").removeClass("hide",200)
+	})
+	$(".at-menu-header-button.at-back-icon").on("click", function(){
+		$(".at-menu-header-title").text("[메뉴]")
+		$(this).addClass("hide",200)
 	})
 	$(".at-menu").on("click",".at-background-image-button", function(){
 		$(".at-background-image-input").trigger("click");
@@ -232,9 +255,8 @@
 			'<a href="#" class="md-dialog-item md-dialog-yes">그래</a>'+
 			'<a href="#" class="md-dialog-item md-dialog-no">아니</a>'
 		);
-		//YES
+		//함수
 		modalFunc = func;
-		
 		$("#modal").removeClass("hide");
 	}
 	$("#modal").on("click",".md-dialog-item",function(){$("#modal").addClass("hide");});
