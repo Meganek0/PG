@@ -31,29 +31,39 @@
 					</div>
 					<div class="at-menu-content">
 						<div class="at-menu-item at-menu-name">
-							<div class="at-menu-item-label">활동명 변경</div>
-							<input class="at-activity-name-input"/>
-							<a class="at-activity-name-button" href="#" style="text-decoration:none; color:white;">버튼</a>
+							<div class="at-menu-item-label">활동명 설정</div>
+							<div class="at-input-group">
+								<input class="at-activity-name-input"/>
+								<a class="at-button at-activity-name-button" href="#">
+									<span class="at-confirm-icon"></span>
+								</a>
+							</div>
 						</div>
 						<div class="at-menu-item at-menu-perm">
-							<div class="at-menu-item-label">공개상태 변경</div>
-							<div class="at-activity-perm-button">전체공개</div>
-							<div class="at-activity-perm-button">지원기업공개</div>
-							<div class="at-activity-perm-button">비공개</div>
+							<div class="at-menu-item-label">공개상태 설정</div>
+							<div class="at-button-group">
+								<div class="at-button at-activity-perm-button selected">전체공개</div>
+								<div class="at-button at-activity-perm-button">지원기업공개</div>
+								<div class="at-button at-activity-perm-button">비공개</div>
+							</div>
 						</div>
 						<div class="at-menu-item at-menu-background">
-							<div class="at-menu-item-label">배경화면</div>
-							<div class="at-background-image">
-								<span class="at-background-image-button">사진</span>
-								<input type="file" class="at-background-image-input" style="display:none;"/>
-							</div>
-							<div class="at-background-color">
-								<span class="at-background-color-button">단색</span>
-								<input type="color" class="at-background-color-input" style="display:none;">
-							</div>
+							<div class="at-menu-item-label">배경화면 설정</div>
+							
+								<div class="at-background-image">
+									<span class="at-button at-background-image-button">사진</span>
+									<input type="file" class="at-background-image-input" style="display:none;" accept="image/*"/>
+								</div>
+								<div class="at-background-color">
+									<span class="at-button at-background-color-button">단색</span>
+									<input type="color" class="at-background-color-input" style="display:none;">
+								</div>
+								<div class="at-button at-background-revert">되돌려</div>
+								
 						</div>
-						<div class="at-menu-item at-menu-board">삭제시 팝업
-						<input type="checkbox" class="at-delblock-dialog" checked>활성</div>
+						<div class="at-menu-item at-menu-board">삭제시 팝업 활성
+							<input type="checkbox" class="at-delblock-dialog" checked>
+						</div>
 						<div class="at-menu-item mtt">아</div>
 					</div>
 				</div>
@@ -86,8 +96,9 @@
 	</div>
 </body>
 <script>
-	//READY!
-	$boardListDraggable = {
+	///ready
+	var perm = ["전체공개","지원기업공개","비공개"];
+	var $boardListDraggable = {
 		handle: ".at-board-list-header",
 		addClasses: false,
 		scroll: false,
@@ -108,21 +119,121 @@
 				$(this).animate({top:0},200,"easeOutExpo",function(){})
 			}
 		} 
-	}
-
+	};
+	var $listItemDraggable = {
+		addClasses: false,
+		scroll: false,
+		classes:{
+			"ui-draggable-handle": "at-sanic",
+			"ui-draggable-dragging": "at-gottagofast"
+		},
+		create:function(e,u){$(".ui-draggable-handle").removeClass("ui-draggable-handle")},
+		start:function(e,u){
+			$(".ui-draggable-dragging").removeClass("ui-draggable-dragging")
+		},
+		stop: function(e,u){
+			if($(this).position().top < 0 && $(this).position().left < 0){
+				$(this).animate({top:0,left:0},200,"easeOutExpo",function(){})
+			}
+			else if($(this).position().left < 0){
+				$(this).animate({left:0},200,"easeOutExpo",function(){})
+			}   
+			else if($(this).position().top < 0){
+				$(this).animate({top:0},200,"easeOutExpo",function(){})
+			}
+		}
+	};
 	
 	$(document).ready(function() {
 		$(document).on('dragover drop', function(e) {
 		    e.preventDefault();
 		    e.stopPropagation();
 		});
-		
 		$(".at-board-list").draggable($boardListDraggable);
 	});
 	
-	///리스트
+	///메뉴
+	//버튼그룹
+	$(document).on("click",".at-button-group > .at-button", function(){
+		$(this).siblings().removeClass("selected");
+		$(this).addClass("selected",200);
+	})
+	//기본설정
+	$(".at-menubtn").on("click", function(){
+		$(".at-menu").removeClass("hide",200,"linear")
+		$(".at-menubtn").addClass("hide")
+	});
+	$(".at-menu-header-button.at-close-icon").on("click", function(){
+		$(".at-menu").addClass("hide",200,"linear")
+		$(".at-menubtn").removeClass("hide",200)
+	});
+	$(".at-menu-header-button.at-back-icon").on("click", function(){
+		$(".at-menu-header-title").text("[메뉴]")
+		$(this).addClass("hide",200)
+	});
+	
+	
+	
+	$(".at-menu").on("click",".at-background-image-button", function(){
+		$(".at-background-image-input").trigger("click");
+	});
+	$(".at-menu").on("change",".at-background-image-input", function(){
+		let file = this.files[0]
+		if(file){
+			if(file.type.startsWith("image")){
+				
+				let reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = function () {
+					$prevBackground = $("html").css("background");
+					$("html").css({
+						"background":"url("+reader.result+")",
+						"background-size":"cover"
+					});
+				};
+				reader.onerror = function (error) {console.log("오류:", error);};
+			}
+		}
+	});
+	$(".at-menu").on("click",".at-background-color-button", function(){
+		$(".at-background-color-input").trigger("click");
+	});
+	$(".at-menu").on("change",".at-background-color-input",function(){
+		$prevBackground = $("html").css("background");
+		$("html").css({
+			"background":$(this).val(),
+			"background-size":"cover"
+		});
+	});
+	
+	$prevBackground = "";
+	$(".at-menu").on("click",".at-background-revert", function(){
+		if($prevBackground){$("html").css({"background":$prevBackground});}
+		$prevBackground = "";
+	});
+	
+	$(".at-menu").on("keydown",".at-activity-name-input",function(e){
+		if(e.keyCode == 13){$(".at-activity-name-button").trigger("click");}
+	});
+	$(".at-menu").on("click",".at-activity-name-button", function(){
+		$(".at-activity-name").text($(".at-activity-name-input").val());
+	});
+	$(".at-menu").on("click",".at-activity-perm-button", function(){
+		$(".at-activity-perm").text($(this).text());
+		
+	});
+	
+	$(".at-menu").on("click",".mtt",function(){
+		$(".at-menu-header-button.at-back-icon").toggleClass("hide",200)
+		modal("테스트",1);
+	});
+	
+	///보드
 	//추가블록
 	$(".at-addblock").on("click",function(e){
+		$(this).addClass("takeonme");
+		$(this).removeClass("takeonme",100);
+		
 		$newlist = $("<div>")
 		.html(
 		'<div class="at-board-list-header">'
@@ -149,7 +260,7 @@
 			left: Math.floor(Math.random() * ($("#content").prop("scrollWidth")-$newlist.width())),
 			top: Math.floor(Math.random() * ($("#content").prop("scrollHeight")-$newlist.height()))
 		},400,"easeOutExpo");
-	})
+	});
 	
 	//삭제블록
 	$(".at-delblock").droppable({
@@ -158,18 +269,22 @@
 		over: function(e,u){u.draggable.addClass("faster")},
 		out: function(e,u){u.draggable.removeClass("faster")},
 		drop: function(e,u){
+			let $delblock = function(){
+				$(".at-delblock").addClass("takeonme");
+				$(".at-delblock").removeClass("takeonme",1000);
+				u.draggable.remove();
+			}
+			
 			if($(".at-delblock-dialog")[0].checked){
-				modal("목을 칠까요?",function(){
-					u.draggable.remove();
-				});
+				modal("삭제?",0,$delblock);
 				return;
 			}
-			u.draggable.remove();
+			$delblock();
 		}
-	})
+	});
 	
-	//아이템 추가
-	$(".at-list-item").draggable();
+	//아이템
+	$(".at-list-item").draggable($listItemDraggable);
 	$("#at-board").on('drop',".at-board-list-content",function(e){
 		e.preventDefault();
 		e.stopPropagation();
@@ -189,76 +304,29 @@
 			console.log("반응")
 			$(this).append(u.draggable.css({"left":0,"top":0}));
 		}
-	})
-	
-	///메뉴
-	$(".at-menubtn").on("click", function(){
-		$(".at-menu").removeClass("hide",200,"linear")
-		$(".at-menubtn").addClass("hide")
-	})
-	$(".at-menu-header-button.at-close-icon").on("click", function(){
-		$(".at-menu").addClass("hide",200,"linear")
-		$(".at-menubtn").removeClass("hide",200)
-	})
-	$(".at-menu-header-button.at-back-icon").on("click", function(){
-		$(".at-menu-header-title").text("[메뉴]")
-		$(this).addClass("hide",200)
-	})
-	$(".at-menu").on("click",".at-background-image-button", function(){
-		$(".at-background-image-input").trigger("click");
-	})
-	$(".at-menu").on("change",".at-background-image-input", function(){
-		let file = this.files[0]
-		if(file){
-			if(file.type.startsWith("image")){
-				
-				var reader = new FileReader();
-				reader.readAsDataURL(file);
-				reader.onload = function () {
-					$("html").css({
-						"background":"url("+reader.result+")",
-						"background-size":"cover"
-					});
-				};
-				reader.onerror = function (error) {console.log("오류:", error);};
-			}
-		}
-	})
-	$(".at-menu").on("click",".at-background-color-button", function(){
-		$(".at-background-color-input").trigger("click");
-	})
-	$(".at-menu").on("change",".at-background-color-input",function(){
-		$("html").css({
-			"background":$(this).val(),
-			"background-size":"cover"
-		});
 	});
 	
-	$(".at-menu").on("click",".at-activity-name-button", function(){
-		$(".at-activity-name").text($(".at-activity-name-input").val());
-	});
-	$(".at-menu").on("click",".at-activity-perm-button", function(){
-		$(".at-activity-perm").text($(this).text());
-	});
-	
-	$(".at-menu").on("click",".mtt",function(){
-		$(".at-menu-header-button.at-back-icon").toggleClass("hide",200)
-	});
+	//리스트 설정
+	$(document).on("click",function(){return;});
 	
 	///모달
 	var modalFunc = function(){return;};
-	modal = function(msg,func = function(){return;}){
+	modal = function(msg, type, func = function(){return;}){
 		//메세지
 		$(".md-dialog-message").text(msg);
 		//아이템
-		$(".md-dialog-items").html(
-			'<a href="#" class="md-dialog-item md-dialog-yes">그래</a>'+
-			'<a href="#" class="md-dialog-item md-dialog-no">아니</a>'
-		);
+		if(type==0){
+			$(".md-dialog-items").html(
+				'<a href="#" class="md-dialog-item md-dialog-yes">그래</a>'+
+				'<a href="#" class="md-dialog-item md-dialog-no">아니</a>'
+			);
+		}else if(type==1){
+			$(".md-dialog-items").html('<a href="#" class="md-dialog-item">닫기</a>');
+		}
 		//함수
 		modalFunc = func;
 		$("#modal").removeClass("hide");
-	}
+	};
 	$("#modal").on("click",".md-dialog-item",function(){$("#modal").addClass("hide");});
 	$("#modal").on("click",".md-dialog-yes",function(){modalFunc();});
 	
