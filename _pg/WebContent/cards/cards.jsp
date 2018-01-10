@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,8 +73,8 @@
 		</div>
 		<div id="content">
 			<div id="at-board">
-				<div class="at-list-item" style="z-index:100;">테스트테스트박스</div>
-				<div class="at-list-item" style="z-index:100;">테스트테스트박스2</div>
+				<div class="at-list-item">테스트테스트박스</div>
+				<div class="at-list-item">테스트테스트박스2</div>
 				<div class="at-board-list">
 					<div class="at-board-list-header">
 						<span class="at-list-name">테스트박스</span>
@@ -97,7 +99,7 @@
 </body>
 <script>
 	///ready
-	var perm = ["전체공개","지원기업공개","비공개"];
+	
 	var $boardListDraggable = {
 		handle: ".at-board-list-header",
 		addClasses: false,
@@ -149,7 +151,36 @@
 		    e.preventDefault();
 		    e.stopPropagation();
 		});
+		
+		//임시 리스트 불러오기
+		var testlistlist = JSON.parse('{'
+			+'"0": {"name": "aaa", "top": 500, "left": 300},'
+			+'"1": {"name": "bbb", "top": 300, "left": 700}}');
+		for ( var testlist in testlistlist) {
+			
+			$("<div>").addClass("at-board-list").html(
+				'<div class="at-board-list-header">'
+					+'<span class="at-list-name">'+testlistlist[testlist].name+'</span>'
+					+'<div class="at-list-menu at-list-icon"></div>'
+				+'</div>'
+				+'<div class="at-board-list-content">'
+					
+			).append(
+				$("<div>").addClass("at-board-list-content").html('<div>공간</div>').droppable({
+					addClasses: false,
+					accept:".at-list-item",
+					drop: function(e,u){$(this).append(u.draggable.css({"left":0,"top":0}));}
+				})
+			).css({
+				position: "absolute",
+				top: testlistlist[testlist].top,
+				left: testlistlist[testlist].left
+			}).appendTo("#at-board");
+		}
+		
 		$(".at-board-list").draggable($boardListDraggable);
+		
+		modal('아이디:${sessionScope.id}',1);
 	});
 	
 	///메뉴
@@ -252,9 +283,8 @@
 			left: e.pageX,
 			top: e.pageY-30,
 			position: "absolute"
-		}).draggable($boardListDraggable);
-		
-		$("#at-board").append($newlist);
+		}).draggable($boardListDraggable)
+		.appendTo("#at-board");
 		
 		$newlist.animate({
 			left: Math.floor(Math.random() * ($("#content").prop("scrollWidth")-$newlist.width())),
