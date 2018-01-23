@@ -37,20 +37,20 @@
 			return new Promise(resolve => setTimeout(resolve,ms));
 		}
 		
-		async function drawSprite(image, item){
+		async function drawSprite(image, item, ms){
 			context.drawImage(image,item,0,80,80,0,0,100,100);
-			await sleep(1000);
+			await sleep(ms);
 			context.clearRect(0,0,80,80);
 		} 
 		
-		async function playAnimation(image, xarray) {
+		async function playAnimation(image, xarray, ms) {
 			for(const i of xarray){
-				await drawSprite(image, i);
+				await drawSprite(image, i, ms);
 			}
-			playAnimation(image, xarray);
+			playAnimation(image, xarray, ms);
 		}
 		
-		playAnimation(number, [0,80,160,240,320]);
+		playAnimation(number, [0,80,160,240,320], 500);
 		console.log("ㄱㄱ");
 	</script>
 </body>
