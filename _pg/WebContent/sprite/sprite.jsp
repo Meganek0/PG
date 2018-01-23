@@ -41,7 +41,7 @@
 			context.drawImage(image,item,0,80,80,0,0,100,100);
 			await sleep(1000);
 			context.clearRect(0,0,80,80);
-		}
+		} 
 		
 		async function playAnimation(image, xarray) {
 			for(const i of xarray){
@@ -51,6 +51,7 @@
 		}
 		
 		playAnimation(number, [0,80,160,240,320]);
+		console.log("ㄱㄱ");
 	</script>
 </body>
 </html>
